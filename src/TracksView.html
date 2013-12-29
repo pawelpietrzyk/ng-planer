@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html ng-app="trackapp">
+<head>
+    <title>Widok tras</title>
+    <script src="../lib/angular-1.2.6/angular.js"></script>
+    <link rel="stylesheet" href="../css/bootstrap.css" />
+    <script src="trackstorage.js"></script>
+    <script src="track.js"></script>
+    <script>
+        angular.module('trackapp', ['TrackModule', 'TrackStorageHttpModule'])
+    </script>
+</head>
+<body ng-controller="TrackController">
+    <div class="well">
+        <h1>Trasy</h1>
+        <form>
+            <div class="form-group">
+                <label for="id">Id</label>
+                <input type="text" id="id" value="{{trackitem._id.$oid}}" readonly class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="begin">Begin</label>
+                <input type="text" id="begin" ng-model="trackitem.begin" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="end">End</label>
+                <input type="text" id="end" ng-model="trackitem.end" class="form-control" />
+            </div>
+            <div class="form-group">
+                <button ng-click="save()" class="btn btn-primary">Zapisz</button>
+                <button ng-click="clear()" class="btn btn-warning">Wyczyść</button>
+            </div>
+        </form>
+    </div>
+    <div class="row" ng-repeat="trackitem in trackEntries">
+        <div class="col-md-1">{{trackitem.begin}}</div>
+        <div class="col-md-1">{{trackitem.end}}</div>
+    </div>
+    <table class="table table-hover">
+        <tr>
+            <th>Początek</th>
+            <th>Koniec</th>
+            <th>Options</th>
+        </tr>
+        <tr ng-repeat="trackitem in trackEntries">
+            <td class="col-md-4">{{trackitem.begin}}</td>
+            <td class="col-md-4">{{trackitem.end}}</td>
+            <td class="col-md-4">
+                <span class="glyphicon glyphicon-remove-circle" ng-click="remove(trackitem._id.$oid)"></span>
+                <span class="glyphicon glyphicon-edit" ng-click="edit(trackitem)"></span>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

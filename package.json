@@ -1,0 +1,14 @@
+{
+    "name": "planner-js-app",
+    "version": "0.0.2",
+    "devDependencies": {
+        "grunt": "~0.4.2",
+        "grunt-contrib-jshint": "~0.7.0",
+        "grunt-contrib-connect": "~0.5.0",
+        "grunt-karma": "~0.6.2",
+        "grunt-html2js": "~0.2.3",
+        "grunt-contrib-watch": "~0.5.3",
+        "string": "~1.7.0",
+        "karma-ng-html2js-preprocessor": "~0.1.0"
+    }
+}
