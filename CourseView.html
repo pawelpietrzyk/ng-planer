@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html ng-app="trackapp">
 <head>
+    <title>Courses view</title>
+    <link rel="stylesheet" href="css/bootstrap.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Courses view</title>
     <script src="lib/angular-1.2.6/angular.js"></script>
-    <link rel="stylesheet" href="css/bootstrap.css" />
-    <link rel="stylesheet" href="css/view-standard.css" />
+    <script src="lib/ui.bootstrap/ui-bootstrap-0.9.0.js"></script>
+    <script src="lib/ui.bootstrap/ui-bootstrap-tpls-0.9.0.js"></script>
     <script src="src/coursestorage.js"></script>
     <script src="src/course.js"></script>
     <script src="src/TimepickerController.js"></script>
     <script src="src/DatepickerController.js"></script>
-    <script src="lib/ui.bootstrap/ui-bootstrap-0.9.0.js"></script>
-    <script src="lib/ui.bootstrap/ui-bootstrap-tpls-0.9.0.js"></script>
     <script src="src/trackstorage.js"></script>
     <script src="src/TrackViewModalController.js"></script>
     <script>
@@ -21,7 +20,7 @@
 </head>
 <body ng-controller="CourseController">
     <div class="row">
-        <div class="col-md-3" id="leftContainer">
+        <div class="col-md-4" id="leftContainer">
         <form class="well">
             <div class="form-group">
                 <div class="btn-group">
@@ -104,7 +103,7 @@
             </div>
         </form>
         </div>
-        <div ng-show="editMode" class="well col-md-3" id="rightContainer">
+        <div class="well col-md-3" id="rightContainer" ng-show="editMode">
             <div>
                 <span class="text-center text-info">
                     <b>{{course.dt | date:'EEEE yyyy-MM-dd'}}</b> courses on trace <b>{{course.trackname}}</b>.
