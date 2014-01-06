@@ -10,6 +10,20 @@ angular.module("TrackStorageHttpModule", [])
     function getResponseData(response) {
         return response.data;
     }
+        TrackStorage.getLocation = function(val) {
+            return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
+                params: {
+                    address: val,
+                    sensor: false
+                }
+            }).then(function(res){
+                    var addresses = [];
+                    angular.forEach(res.data.results, function(item){
+                        addresses.push(item.formatted_address);
+                    });
+                    return addresses;
+                });
+        };
 
     TrackStorage.save = function(trackitem) {
         if (trackitem._id)
@@ -32,9 +46,6 @@ angular.module("TrackStorageHttpModule", [])
     };
 
     TrackStorage.getTracks = function() {
-        //var result = [];
-
-        //return result;
         return $http.get(URL, {params: {apiKey: API_KEY}}).then(getResponseData);
     };
     return TrackStorage;

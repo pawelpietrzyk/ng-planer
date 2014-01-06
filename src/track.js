@@ -10,7 +10,21 @@ angular.module('TrackModule', []).controller('TrackController', function($scope,
             $scope.trackEntries = trackEntries;
         });
     }
+
+    $scope.getLocation = function(val) {
+        return TrackStorage.getLocation(val);
+    }
+    $scope.getTrackName = function()
+    {
+        if (!$scope.trackitem.name)
+        {
+            $scope.trackitem.name = $scope.trackitem.begin + '-' + $scope.trackitem.end;
+        }
+        return $scope.trackitem.name;
+    }
+
     $scope.save = function() {
+        $scope.getTrackName();
         TrackStorage.save($scope.trackitem).then(function() {
             $scope.currentTrackEntry = {};
             $scope.clear();

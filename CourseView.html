@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html ng-app="trackapp">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Courses view</title>
+    <script src="lib/angular-1.2.6/angular.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <link rel="stylesheet" href="css/view-standard.css" />
+    <script src="src/coursestorage.js"></script>
+    <script src="src/course.js"></script>
+    <script src="src/TimepickerController.js"></script>
+    <script src="src/DatepickerController.js"></script>
+    <script src="lib/ui.bootstrap/ui-bootstrap-0.9.0.js"></script>
+    <script src="lib/ui.bootstrap/ui-bootstrap-tpls-0.9.0.js"></script>
+    <script src="src/trackstorage.js"></script>
+    <script src="src/TrackViewModalController.js"></script>
+    <script>
+        angular.module('trackapp', ['CourseModule', 'CourseStorageHttpModule', 'ui.bootstrap', 'TrackStorageHttpModule'])
+    </script>
+</head>
+<body ng-controller="CourseController">
+    <div class="row">
+        <div class="col-md-3" id="leftContainer">
+        <form class="well">
+            <div class="form-group">
+                <div class="btn-group">
+                    <button type="button"
+                            class="btn btn-primary"
+                            ng-model="queryOption"
+                            ng-change="contentChanged()"
+                            btn-radio="'Day'">Day</button>
+                    <button type="button"
+                            class="btn btn-primary"
+                            ng-model="queryOption"
+                            ng-change="contentChanged()"
+                            btn-radio="'DayFromNow'">From Now</button>
+                    <button type="button"
+                            class="btn btn-primary"
+                            ng-model="queryOption"
+                            ng-change="contentChanged()"
+                            btn-radio="'All'">All</button>
+                </div>
+                <button type="button"
+                        ng-model="editMode"
+                        ng-change="editModeChanged()"
+                        class="btn btn-primary"
+                        btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">Edit Mode</button>
+
+            </div>
+            <div class="form-group">
+
+                    <select class="form-control"
+                            ng-options="it for it in allTracks"
+                            ng-model="course.trackname"
+                            ng-change="contentChanged()">
+                        <option></option>
+                    </select>
+
+            </div>
+            <div class="form-group">
+
+                    <div ng-controller="DatepickerController">
+                        <div style="display:inline-block;">
+                            <div class="well well-sm"
+                                 ng-model="course.dt" ng-change="dateChanged()">
+                                <datepicker min="minDate" show-weeks="showWeeks"></datepicker>
+                            </div>
+                        </div>
+                    </div>
+
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div ng-controller="TimepickerController">
+                            <div ng-model="course.dt" ng-change="dateTimeChanged()" style="display:inline-block;">
+                                <timepicker hour-step="hstep"
+                                            minute-step="mstep"
+                                            show-meridian="ismeridian">
+                                </timepicker>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <table class="table table-hover">
+
+                            <tr ng-repeat="course in courses | limitTo:3">
+                                <td class="text-center">{{course.dt | date:'HH:mm'}}</td>
+                                <td class="text-center" ng-show="editMode">
+                                    <span class="glyphicon glyphicon-remove-circle" ng-click="remove(course._id.$oid)"></span>
+                                    <span class="glyphicon glyphicon-edit" ng-click="edit(course)"></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="form-group" ng-show="editMode">
+                    <button ng-click="save()" class="btn btn-primary">Save</button>
+                    <button ng-click="clear()" class="btn btn-warning">Clear</button>
+            </div>
+        </form>
+        </div>
+        <div ng-show="editMode" class="well col-md-3" id="rightContainer">
+            <div>
+                <span class="text-center text-info">
+                    <b>{{course.dt | date:'EEEE yyyy-MM-dd'}}</b> courses on trace <b>{{course.trackname}}</b>.
+                </span>
+                <a href="" class="text-danger" ng-click="changeCloneMode()" ng-show="editMode">
+                    <b>Clone selected</b>
+                </a>
+            </div>
+            <div class="well-sm" ng-show="cloneMode">
+                <span>
+                    <span><b>Select date</b></span>
+                    <input type="date" ng-model="toDt" name="toDateTime">
+                    <span class="glyphicon glyphicon-circle-arrow-right" ng-click="cloneSelected()"></span>
+                </span>
+            </div>
+            <table class="table table-hover">
+                <tr ng-repeat="course in courses">
+                    <td class="text-center">{{course.dt | date:'HH:mm'}}</td>
+                    <td class="text-center" ng-show="editMode">
+                        <span class="glyphicon glyphicon-remove-circle" ng-click="remove(course._id.$oid)"></span>
+                        <span class="glyphicon glyphicon-edit" ng-click="edit(course)"></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html ng-app="trackapp">
+<head>
+    <title>Track View</title>
+    <script src="lib/angular-1.2.6/angular.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <script src="src/trackstorage.js"></script>
+    <script src="src/track.js"></script>
+    <script>
+        angular.module('trackapp', ['TrackModule', 'TrackStorageHttpModule'])
+    </script>
+</head>
+<body ng-controller="TrackController">
+<div class="well">
+    <h3>Track item</h3>
+    <form>
+        <div class="form-group">
+            <label for="begin" class="sr-only">Begin</label>
+            <input type="text" id="begin" ng-model="trackitem.begin" class="form-control" placeholder="Begin" />
+        </div>
+        <div class="form-group">
+            <label for="end" class="sr-only">End</label>
+            <input type="text" id="end" ng-model="trackitem.end" class="form-control" placeholder="End" />
+        </div>
+        <div class="form-group">
+            <label for="name" class="sr-only">Name</label>
+            <input type="text" id="name" ng-model="trackitem.name" class="form-control" placeholder="Name" />
+        </div>
+        <div class="form-group">
+            <button ng-click="save()" class="btn btn-primary">Save</button>
+            <button ng-click="clear()" class="btn btn-warning">Clear</button>
+        </div>
+    </form>
+</div>
+
+<div class="well">
+    <table class="table table-hover">
+        <tr>
+            <th>Begin</th>
+            <th>End</th>
+            <th>Name</th>
+            <th>Options</th>
+        </tr>
+        <tr ng-repeat="trackitem in trackEntries">
+            <td class="col-md-4">{{trackitem.begin}}</td>
+            <td class="col-md-4">{{trackitem.end}}</td>
+            <td class="col-md-4">{{trackitem.name}}</td>
+            <td class="col-md-4">
+                <span class="glyphicon glyphicon-remove-circle" ng-click="remove(trackitem._id.$oid)"></span>
+                <span class="glyphicon glyphicon-edit" ng-click="edit(trackitem)"></span>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
