@@ -10,6 +10,50 @@ angular.module('CourseModule', []).controller('CourseController', function($scop
     };
     $scope.today();
 
+    var btnStates = ["btn-success", "btn-danger"];
+
+    var resetBtnState = function() {
+        $scope.btn1State = btnStates[0];
+        $scope.btn2State = btnStates[0];
+        $scope.btn3State = btnStates[0];
+        $scope.btn4State = btnStates[0];
+    }
+    var setBtnState = function(btn, state) {
+        resetBtnState();
+        if (btn == 1) {
+            $scope.btn1State = btnStates[state];
+            $scope.queryOption = $scope.queryOptions[0];
+            $scope.contentChanged();
+        }
+        if (btn == 2) {
+            $scope.btn2State = btnStates[state];
+            $scope.queryOption = $scope.queryOptions[1];
+            $scope.contentChanged();
+        }
+        if (btn == 3) {
+            $scope.btn3State = btnStates[state];
+            $scope.queryOption = $scope.queryOptions[3];
+            $scope.contentChanged();
+        }
+        if (btn == 4) {
+            $scope.btn4State = btnStates[state];
+            $scope.editMode = true;
+            $scope.editModeChanged();
+        }
+    }
+    $scope.btn1Change = function() {
+        setBtnState(1, 1);
+    }
+    $scope.btn2Change = function() {
+        setBtnState(2, 1);
+    }
+    $scope.btn3Change = function() {
+        setBtnState(3, 1);
+    }
+    $scope.btn4Change = function() {
+        setBtnState(4, 1);
+    }
+
     $scope.showAllTracks = false;
     $scope.queryOptions = ["Day","DayFromNow","FromNow","All"];
     $scope.queryOption = "DayFromNow";
@@ -172,6 +216,9 @@ angular.module('CourseModule', []).controller('CourseController', function($scop
     };
     $scope.clear();
     $scope.getTracks();
+    resetBtnState();
+    $scope.btn2State = btnStates[1];
+
 
     //selectDefaultTrackName();
 

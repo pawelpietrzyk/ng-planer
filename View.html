@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html ng-app="trackapp">
+<head>
+    <title>Courses view</title>
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="lib/angular-1.2.6/angular.js"></script>
+    <script src="lib/ui.bootstrap/ui-bootstrap-0.9.0.js"></script>
+    <script src="lib/ui.bootstrap/ui-bootstrap-tpls-0.9.0.js"></script>
+    <script src="src/coursestorage.js"></script>
+    <script src="src/course.js"></script>
+    <script src="src/TimepickerController.js"></script>
+    <script src="src/DatepickerController.js"></script>
+    <script src="src/trackstorage.js"></script>
+    <script src="src/TrackViewModalController.js"></script>
+    <script>
+        angular.module('trackapp', ['CourseModule', 'CourseStorageHttpModule', 'ui.bootstrap', 'TrackStorageHttpModule'])
+    </script>
+</head>
+<body ng-controller="CourseController">
+    <div class="container well">
+        <div class="row">
+            <div class="col-md-6">
+                <form class="well">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <button class="btn {{btn1State}}"
+                                        ng-click="btn1Change()"
+                                        style="width: 100%">
+                                    Day
+                                </button>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn {{btn2State}}"
+                                        ng-click="btn2Change()"
+                                        style="width: 100%">
+                                    From Now
+                                </button>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn {{btn3State}}"
+                                        ng-click="btn3Change()"
+                                        style="width: 100%">
+                                    All
+                                </button>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn {{btn4State}}"
+                                        ng-click="btn4Change()"
+                                        style="width: 100%">
+                                    Edit mode
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <select class="form-control"
+                                ng-options="it for it in allTracks"
+                                ng-model="course.trackname"
+                                ng-change="contentChanged()">
+                            <option></option>
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div ng-controller="DatepickerController">
+                                    <div class="center-block" style="display:inline-block;">
+                                        <div class="well well-sm" ng-model="course.dt" ng-change="dateChanged()">
+                                            <datepicker min="minDate" show-weeks="showWeeks"></datepicker>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div ng-controller="TimepickerController">
+                                            <div ng-model="course.dt"
+                                                 ng-change="dateTimeChanged()"
+                                                 style="display:inline-block;">
+                                                <timepicker hour-step="hstep"
+                                                            minute-step="mstep"
+                                                            show-meridian="ismeridian">
+                                                </timepicker>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+
+
+                    </div>
+                    <div class="form-group" ng-show="editMode">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <button ng-click="save()" class="btn btn-primary" style="width: 100%">Save</button>
+                            </div>
+                            <div class="col-xs-6">
+                                <button ng-click="clear()" class="btn btn-warning" style="width: 100%">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6" ng-show="editMode">
+                <div class="well">
+                    <span class="text-center text-info">
+                        <b>{{course.dt | date:'EEEE yyyy-MM-dd'}}</b> courses on trace <b>{{course.trackname}}</b>.
+                    </span>
+                    <a href="" class="text-danger" ng-click="changeCloneMode()" ng-show="editMode">
+                        <b>Clone selected</b>
+                    </a>
+                    <div class="well-sm" ng-show="cloneMode">
+                    <span>
+                        <span><b>Select date</b></span>
+                        <input type="date" ng-model="toDt" name="toDateTime">
+                        <span class="glyphicon glyphicon-circle-arrow-right" ng-click="cloneSelected()"></span>
+                    </span>
+                    </div>
+                    <table class="table table-hover">
+                        <tr ng-repeat="course in courses">
+                            <td class="text-center">{{course.dt | date:'HH:mm'}}</td>
+                            <td class="text-center" ng-show="editMode">
+                                <span class="glyphicon glyphicon-remove-circle" ng-click="remove(course._id.$oid)"></span>
+                                <span class="glyphicon glyphicon-edit" ng-click="edit(course)"></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
